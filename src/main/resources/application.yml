@@ -3,25 +3,66 @@ spring:
   profiles:
     include: local
   datasource:
-    # local-mysql-db-test
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(JVueZoKtXw4kIZwcep06zxINLMkSAlqfMGDvab76y51kJsqpuOWFqEYM/VLpYFrZEvPi95XaSO8w+/wyK3D7256xZJWsnXlzqBavCkaQ9ET74Pv1D1hKugeJOmPgticFJtHhrOFtIqB2FeYKT5Ptk28tc1DnfZ14kaoWxpA/NH/HIro4IaA9ldiFakEVlJjhxajVTPmt81fmLh6zKSDYSickg2hYHZdk8tTFKSrOHFlW3IlZZ3wOkLZwlenD8RkmczVu62y/GI96wAAn5hByzg/QjoZ4DsV65I8Hd4x3b9w=)
-    username: ENC(oHZcnMbXKHW+hkey8ZJce+7N6F3wYmRfiuc0t+bEUYYWR6Dcvgd7zVG+gB0qz9Zm)
-    password: ENC(E8sbVtAaWmW3V6JI8RGGvZW3qArudjsLRK7NzHijB9G3rfk9AQ/oZYLnkmeldxwwyWG1BzR2JNv2C4DiSuhxog==)
+    url: ${duktown.datasource.url}
+    username: ${duktown.datasource.username}
+    password: ${duktown.datasource.password}
   # JPA
   jpa:
+    hibernate:
+      ddl-auto: ${jpa-hibernate-ddl-auto}
     properties:
       hibernate:
         show_sql: true
         format_sql: true
 
+  # mail
+  mail:
+    host: ${duktown.mail.host}
+    port: ${duktown.mail.port}
+    username: ${duktown.mail.username}
+    password: ${duktown.mail.password}
+    properties:
+      mail:
+        smtp:
+          auth: ${duktown.mail.properties.mail.smtp.auth}
+          starttls:
+            enable: ${duktown.mail.properties.mail.smtp.starttls.enable}
+            required: ${duktown.mail.properties.mail.smtp.starttls.required}
+          connection_timeout: ${duktown.mail.properties.mail.smtp.connection_timeout}
+          timeout: ${duktown.mail.properties.mail.smtp.timeout}
+          write_timeout: ${duktown.mail.properties.mail.smtp.write_timeout}
+    auth-code-expiration-millis: ${duktown.mail.auth-code-expiration-millis}
+
 # Logging level
 logging:
   level:
     com:
-      duktown: debug
+      duktown: ${duktown.logging.level.com.duktown}
 
 #jasypt
 jasypt:
   encryptor:
     bean: jasyptEncryptorAES
+
+# CUSTOM
+custom:
+  # JWT
+  jwt:
+    secret-key:
+      ${duktown.custom.jwt.secret-key}
+  # CORS
+  cors:
+    originUrl:
+      ${duktown.custom.cors.originUrl}
+  # SEED
+  seed:
+    pbsz:
+      user:
+        key: ${duktown.custom.seed.pbsz.user.key}
+      iv: ${duktown.custom.seed.pbsz.iv}
+  demo:
+    pwd: ${duktown.custom.demo.pwd}
+  jasypt:
+    key: ${duktown.custom.jasypt.key}
+    algorithm: ${duktown.custom.jasypt.algorithm}
